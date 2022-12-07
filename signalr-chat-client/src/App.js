@@ -31,6 +31,11 @@ function App() {
       setMessageList(list => [...list, newMessage]);
     });
 
+    connection.current.on("WorkerPrinted", function (message) {
+      const newMessage = `WORKER printed: ${message}`;
+      setMessageList(list => [...list, newMessage]);
+    });
+
     connection.current.start()
       .then(() => setSendDisabled(false))
       .catch(console.error);
