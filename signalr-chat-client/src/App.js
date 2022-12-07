@@ -6,7 +6,7 @@ const SERVER_URL = "http://localhost:5096/chatHub";
 function App() {
   const connection = useRef();
 
-  const [userMessageList, setUserMessageList] = useState([]);
+  const [messageList, setMessageList] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [sendCounter, setSendCounter] = useState(0);
   const [sendDisabled, setSendDisabled] = useState(true);
@@ -28,8 +28,8 @@ function App() {
       .build();
 
     connection.current.on("ReceiveMessage", function (user, message) {
-      const newUserMessage = { user, message };
-      setUserMessageList(list => [...list, newUserMessage]);
+      const newMessage = `${user} says: ${message}`;
+      setMessageList(list => [...list, newMessage]);
     });
 
     connection.current.start()
@@ -46,9 +46,7 @@ function App() {
       </form>
       <hr />
       <ul id="messagesList">
-        {userMessageList.map((item, i) => {
-          const { user, message } = item;
-          const text = `user "${user}" says: "${message}"`;
+        {messageList.map((text, i) => {
           return <li key={i}>{text}</li>
         })}
       </ul>
