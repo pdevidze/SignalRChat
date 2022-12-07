@@ -8,17 +8,16 @@ function App() {
 
   const [messageList, setMessageList] = useState([]);
   const [userInput, setUserInput] = useState('');
-  const [sendCounter, setSendCounter] = useState(0);
+  const [messageInput, setMessageInput] = useState('');
   const [sendDisabled, setSendDisabled] = useState(true);
 
   function userChangeHandler(e) { setUserInput(e.target.value); }
+  function messageChangeHandler(e) { setMessageInput(e.target.value); }
   function submitMessage(e) {
     e.preventDefault();
-    const message = sendCounter.toString();
     connection.current
-      .invoke("SendMessage", userInput, message)
+      .invoke("SendMessage", userInput, messageInput)
       .catch(console.error);
-    setSendCounter(state => state + 1);
   };
 
   useEffect(() => {
@@ -42,6 +41,8 @@ function App() {
       <form onSubmit={submitMessage}>
         <label htmlFor="user">User:</label>
         <input id="user" value={userInput} onChange={userChangeHandler} />
+        <label htmlFor="message">Message:</label>
+        <input id="message" value={messageInput} onChange={messageChangeHandler} />
         <button disabled={sendDisabled}>Send Message</button>
       </form>
       <hr />
