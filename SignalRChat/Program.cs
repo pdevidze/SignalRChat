@@ -2,6 +2,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
 
+builder.Services.AddHostedService<MyBackgroundService>();
+
+builder.Services.AddSingleton<IWorker, MyWorker>();
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
