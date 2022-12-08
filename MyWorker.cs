@@ -14,7 +14,7 @@ namespace SignalRChat
   {
     private readonly ILogger<MyWorker> logger;
     private IHubContext<ChatHub> HubContext { get; set; }
-    private int number = 0;
+    private int paymentId = 0;
 
     public MyWorker(ILogger<MyWorker> logger, IHubContext<ChatHub> hubcontext)
     {
@@ -26,9 +26,9 @@ namespace SignalRChat
     {
       while (!cancellationToken.IsCancellationRequested)
       {
-        Interlocked.Increment(ref number);
-        logger.LogInformation($"Worker printing number: {number}");
-        await this.HubContext.Clients.All.SendAsync("WorkerPrinted", number);
+        Interlocked.Increment(ref paymentId);
+        logger.LogInformation($"Worker job finished. paymentId: {paymentId}");
+        await this.HubContext.Clients.All.SendAsync("RecieveJobFinished", paymentId);
         await Task.Delay(1000 * 5);
       }
     }
