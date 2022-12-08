@@ -1,26 +1,16 @@
-var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 
-builder.Services.AddSignalR();
-
-builder.Services.AddHostedService<MyBackgroundService>();
-
-builder.Services.AddSingleton<IWorker, MyWorker>();
-
-builder.Services.AddCors(options =>
+namespace SignalRChat
 {
-    options.AddDefaultPolicy(builder =>
+  public class Program
+  {
+    public static void Main(string[] args)
     {
-        builder.WithOrigins("http://localhost:3000")
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
-    });
-});
+      CreateWebHostBuilder(args).Build().Run();
+    }
 
-var app = builder.Build();
-
-app.UseCors();
-
-app.MapHub<ChatHub>("/chatHub");
-
-app.Run();
+    public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
+  }
+}
